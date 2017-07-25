@@ -182,6 +182,20 @@ void removeElement() {
 	}
 }
 
+void reverse() {
+    temp = start;
+    start = end;
+    end = temp;
+    temp = start;
+    while (temp != NULL) {
+        ptr = temp -> right;
+        temp -> right = temp -> left;
+        temp -> left = ptr;
+        temp = temp -> right;
+    }
+
+}
+
 int entryDisplay() {
 	int choice;
 	system("cls");
@@ -190,7 +204,8 @@ int entryDisplay() {
 	printf("\n2.Display");
 	printf("\n3.Insert an Element");
 	printf("\n4.Remove an Element");
-	printf("\n5.Exit");
+	printf("\n5.Reverse Linked List");
+	printf("\n6.Exit");
 	printf("\nEnter your Choice : ");
 	scanf("%d",&choice);
 	return choice;
@@ -216,16 +231,21 @@ void displayAction(int choice) {
 				break;
 
 		case 3 : insert();
-				printf("\n\nPress ENTER to continue ...");
-				getch();
+				 printf("\n\nPress ENTER to continue ...");
+				 getch();
 				 break;
 
 		case 4 : removeElement();
-				printf("\n\nPress ENTER to continue ...");
-				getch();
+				 printf("\n\nPress ENTER to continue ...");
+				 getch();
 				 break;
 
-		case 5 : exit(0);
+        case 5 : reverse();
+                 printf("\n\nPress ENTER to continue ...");
+				 getch();
+                 break;
+
+		case 6 : exit(0);
 				 break;
 
 		default : printf("\nEnter a valid choice");
@@ -239,7 +259,7 @@ int main() {
 		choice = entryDisplay();
 		displayAction(choice);
 	}
-	while(choice != 5);
+	while(choice != 6);
 	getch();
 	return 0;
 }

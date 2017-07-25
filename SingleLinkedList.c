@@ -18,15 +18,43 @@ void create(int value) {
 		curr = temp;
 	}
 }
-void display() {
-	temp = start;
-	while(temp != NULL) {
-		printf("\n%d",temp -> data);
-		temp = temp -> link;
-	}
+
+void forwardDisplay(struct node* pointer) {
+    if(pointer != NULL) {
+        printf("\n%d",pointer -> data);
+        forwardDisplay(pointer -> link);
+    } else {
+        return;
+    }
+
 }
 
-void ibeginning(int value) {
+void backDisplay(struct node* pointer) {
+    if(pointer != NULL) {
+        backDisplay(pointer -> link);
+        printf("\n%d",pointer -> data);
+    } else {
+        return;
+    }
+}
+
+void display() {
+    int choice;
+    system("cls");
+    printf("\n=== Display Menu ===");
+    printf("\n1.Forward");
+    printf("\n2.Backward");
+    printf("\nEnter your choice : ");
+    scanf("%d",&choice);
+    switch(choice) {
+        case 1 : forwardDisplay(start);
+                 break;
+        case 2 : backDisplay(start);
+                 break;
+    }
+}
+
+void iBeginning(int value) {
 	ptr = (struct node*) malloc(sizeof(struct node));
 	ptr -> data = value;
 	ptr -> link = start;
@@ -48,7 +76,7 @@ void iAny(int position, int value) {
 	int current = 1;
 	temp = start;
 	if(position == 1) {
-		ibeginning(value);
+		iBeginning(value);
 	} else {
 		while(current != position && temp != NULL) {
 			current++;
@@ -78,7 +106,7 @@ void insert() {
 	switch(choice) {
 		case 1 : printf("\nEnter Data : ");
 				 scanf("%d",&value);
-				 ibeginning(value);
+				 iBeginning(value);
 				 break;
 
 	    case 2 : printf("\nEnter Position : ");
@@ -95,7 +123,7 @@ void insert() {
 	}
 }
 
-void rbeginning() {
+void rBeginning() {
 	temp = start;
 	start = start -> link;
 	free(temp);
@@ -115,7 +143,7 @@ void rAny(int position) {
 	int current = 1;
 	temp = start;
 	if(position == 1) {
-		rbeginning();
+		rBeginning();
 	} else {
 		while(current != position && temp -> link != NULL) {
 			current++;
@@ -137,28 +165,72 @@ void removeElement() {
 	printf("\nEnter your choice : ");
 	scanf("%d",&choice);
 	switch(choice) {
-		case 1 : rbeginning();
+		case 1 : rBeginning();
 				 break;
 
 	    case 2 : printf("\nEnter Position : ");
-			 scanf("%d",&position);
-			 rAny(position);
-			 break;
+                 scanf("%d",&position);
+                 rAny(position);
+                 break;
 
 	    case 3 : rEnd();
-			 break;
+                 break;
 	}
+}
+
+void iterativeReverse() {
+    struct node* prev;
+    struct node* next;
+    struct node* current;
+    current = start;
+    prev = NULL;
+    while (current != NULL) {
+        next = current -> link;
+        current -> link = prev;
+        prev = current;
+        current = next;
+    }
+    start = prev;
+}
+
+void recursionReverse(struct node* current) {
+    if (current -> link == NULL) {
+        start = current;
+        return;
+    } else {
+        recursionReverse(current -> link);
+        struct node* ptr = current -> link;
+        ptr -> link = current;
+        current -> link = NULL;
+    }
+}
+
+void reverse() {
+    int choice;
+    system("cls");
+    printf("\n=== Reverse Menu ===");
+    printf("\n1.Iterative");
+    printf("\n2.Recursion");
+    printf("\nEnter your choice : ");
+    scanf("%d",&choice);
+    switch(choice) {
+        case 1 : iterativeReverse();
+                 break;
+        case 2 : recursionReverse(start);
+                 break;
+    }
 }
 
 int entryDisplay() {
 	int choice;
 	system("cls");
-	printf("\n===Main Menu===");
+	printf("\n=== Single Linked List Main Menu===");
 	printf("\n1.Create Linked List");
 	printf("\n2.Display");
 	printf("\n3.Insert an Element");
 	printf("\n4.Remove an Element");
-	printf("\n5.Exit");
+	printf("\n5.Reverse Linked List");
+	printf("\n6.Exit");
 	printf("\nEnter your Choice : ");
 	scanf("%d",&choice);
 	return choice;
@@ -179,34 +251,40 @@ void displayAction(int choice) {
 				break;
 
 		case 2 :display();
-			printf("\n\nPress ENTER to continue ...");
+                printf("\n\nPress ENTER to continue ...");
 				getch();
 				break;
 
 		case 3 : insert();
-				printf("\n\nPress ENTER to continue ...");
-				getch();
+                 printf("\n\nPress ENTER to continue ...");
+				 getch();
 				 break;
 
 		case 4 : removeElement();
-				printf("\n\nPress ENTER to continue ...");
-				getch();
+				 printf("\n\nPress ENTER to continue ...");
+				 getch();
 				 break;
 
-		case 5 : exit(0);
+        case 5 : reverse();
+                 printf("\n\nPress ENTER to continue ...");
+				 getch();
+                 break;
+
+		case 6 : exit(0);
 				 break;
 
 		default : printf("\nEnter a valid choice");
 	}
 }
+
 int main() {
-	int i,n,choice;
+	int choice;
 	system("cls");
 	do {
 		choice = entryDisplay();
 		displayAction(choice);
 	}
-	while(choice != 5);
+	while(choice != 6);
 	getch();
 	return 0;
 }
